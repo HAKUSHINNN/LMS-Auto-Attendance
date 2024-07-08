@@ -251,15 +251,7 @@ class App(ctk.CTk):
 
     # ボタン
     def on_button_click(self):
-        self.open_new_window()
-
-    # 処理内容
-    def open_new_window(self):
-        new_window = ctk.CTkToplevel(self)
-        new_window.title("settings")
-        new_window.geometry("300x200")
-        new_label = ctk.CTkLabel(new_window, text="なんにもないぴょーんwwww")
-        new_label.pack(padx=20, pady=20)
+        self.open_settings()
 
     # 出席登録ボタン
     def submit_attendance(self):
@@ -290,7 +282,7 @@ class App(ctk.CTk):
             self.user_icon_label.image = user_icon_ctk_image
 
         else:
-            self.user_name_label.configure(text="Failed to login.")
+            self.user_name_label.configure(text="Failed to login.", font=(FONT, 15))
 
     def update_course_info(self, course_name, start_datetime, end_datetime):
         formatted_starttime = start_datetime.strftime("%H:%M") if start_datetime else "??"
