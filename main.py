@@ -205,27 +205,27 @@ class App(ctk.CTk):
 
         # コース情報
         self.course_info_frame = ctk.CTkFrame(self, corner_radius=10)
-        self.course_info_frame.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+        self.course_info_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         self.course_info_label = ctk.CTkLabel(self.course_info_frame, text="コース情報", font=(FONT, 15))
         self.course_info_label.pack(side="top", padx=10, pady=5)
 
         # 開始時間情報
         self.course_time_frame = ctk.CTkFrame(self, corner_radius=10)
-        self.course_time_frame.grid(row=1, column=1, padx=10, pady=10, sticky="nsew")
+        self.course_time_frame.grid(row=2, column=1, padx=10, pady=10, sticky="nsew")
         self.course_time_label_frame = ctk.CTkLabel(self.course_time_frame, text="出席入力可能時刻", font=(FONT, 15))
         self.course_time_label_frame.pack(side="top", padx=10, pady=5)
     
         # パスワード入力
         self.password_frame = ctk.CTkFrame(self, corner_radius=10)
-        self.password_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.password_frame.grid(row=1, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
         self.password_label = ctk.CTkLabel(self.password_frame, text="パスワード入力", font=(FONT, 15))
         self.password_label.pack(side="top", padx=10, pady=5)
 
-        self.password_entry = ctk.CTkEntry(self.password_frame, placeholder_text="出席パスワードを入力してください", font=(FONT, 15), width=300, height=40)
+        self.password_entry = ctk.CTkEntry(self.password_frame, placeholder_text="出席パスワードを入力してください", font=(FONT, 25), justify="center", width=450, height=40)
         self.password_entry.pack(side="top", padx=10, pady=10)
 
         # 出席ボタン
-        self.attendance_button = ctk.CTkButton(self.password_frame, text="出席", font=(FONT, 15), command=self.submit_attendance)
+        self.attendance_button = ctk.CTkButton(self.password_frame, text="出席", font=(FONT, 25), width=150, height=50, command=self.submit_attendance)
         self.attendance_button.pack(side="top", padx=10, pady=10)
 
         # コース名
