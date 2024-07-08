@@ -2,19 +2,22 @@
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import json
+
 import customtkinter as ctk
-from tkinter import Tk, messagebox
+from tkinter import messagebox
+
 from io import BytesIO
 from PIL import Image
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+
 # 各webページ
 lms_url = "https://lms-tokyo.iput.ac.jp/"
 login_url = f"{lms_url}login/index.php"
 prof_url = f"{lms_url}user/profile.php"
 cal_url = f"https://lms-tokyo.iput.ac.jp/calendar/view.php?view=day"
-test_url = "C:/Users/chi4k/Downloads/TKF301L24CMB_%20%E5%87%BA%E6%AC%A0%E7%AE%A1%E7%90%86%20_%20IPUT%20LMS_2.html"
 
 options = Options().add_argument("--headless")
 
