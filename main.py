@@ -10,8 +10,10 @@ from io import BytesIO
 from PIL import Image
 
 from selenium import webdriver
+from selenium.webdriver.common import desired_capabilities
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 # 各webページ
 lms_url = "https://lms-tokyo.iput.ac.jp/"
@@ -19,7 +21,8 @@ login_url = f"{lms_url}login/index.php"
 prof_url = f"{lms_url}user/profile.php"
 cal_url = f"https://lms-tokyo.iput.ac.jp/calendar/view.php?view=day"
 
-options = Options().add_argument("--headless")
+options = Options()
+options.add_argument("--headless")
 
 # config.jsonのインポートとエクスポート
 def load_config():
@@ -56,6 +59,8 @@ def login(session, username, password):
         save_config(config)
 
         return True
+    
+
     else:
         print("ログインに失敗しました...config.jsonファイルの中身を確認して下さい。")
         return False
@@ -125,7 +130,7 @@ def process_course_cards(app, cards):
             current_datetime = datetime.now().replace(microsecond=0)
             attendance_management = card.find("h3", class_="name d-inline-block").text.strip()
 
-            if start_datetime <= current_datetime <= end_datetime and any(title in attendance_management for title in config["attendance_titles"]):
+            if any(title in attendance_management for title in config["attendance_titles"]):
                 courses_check = False
                 app.after(0, lambda: app.update_course_info(course_name, start_datetime, end_datetime))
 
@@ -311,21 +316,18 @@ class App(ctk.CTk):
     def process_attendance(self, url, student_password):
         # Seleniumドライバーのセットアップ
         if not self.driver:
-            self.driver = webdriver.Chrome(options=options)
+            caps = DesiredCapabilities().CHROME
+            caps["pageLoadStrategy"] = "none"
+            self.driver = webdriver.Chrome(options=options, desired_capabilities=caps)
 
-        # 無理やりログイン(あとでなおす)
-        self.driver.get(login_url)
-        
-        self.driver.find_element(By.ID, "username").send_keys(username)
-        self.driver.find_element(By.ID, "password").send_keys(password)
+        # セッションの引き継ぎの為にクッキーを設定
+        for cookie in session.cookies:
+            self.driver.add_cookie({"name": cookie.name, "value": cookie.value, "domain": cookie.domain})
 
-        # ログインボタンをクリックする
-        self.driver.find_element(By.ID, "loginbtn").click()
-
+        # Chrome起動
         self.driver.get(url)
         
         # ラジオボタンの選択
-        # self.driver.find_element(By.XPATH, "//input[@type='radio' and @value='出席']")
         radio_button = self.driver.find_element(By.CLASS_NAME, "statusdesc")
         if radio_button:
             radio_button.click()
@@ -347,7 +349,7 @@ class App(ctk.CTk):
         
         else:
             messagebox.showerror("登録失敗", "出席登録に失敗しました...\nパスワードが間違っているか，出席ページが閉じられた可能性があります．")
-
+            self.driver.quit()
 
 if __name__ == "__main__":
     app = App()
