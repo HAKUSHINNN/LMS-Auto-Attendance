@@ -15,7 +15,7 @@ from selenium.webdriver.chrome.options import Options
 lms_url = "https://lms-tokyo.iput.ac.jp/"
 login_url = f"{lms_url}login/index.php"
 prof_url = f"{lms_url}user/profile.php"
-cal_url = f"https://lms-tokyo.iput.ac.jp/calendar/view.php?view=day"
+cal_url = f"{lms_url}calendar/view.php?view=day"
 
 options = Options()
 options.add_argument("--headless")
